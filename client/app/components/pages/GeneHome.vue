@@ -269,6 +269,7 @@ main.content.clin
         :genomeBuildHelper="genomeBuildHelper"
         :cohortModel="cohortModel"
         :info="selectedVariantInfo"
+        :cohortModelReady="isCohortReady"
         @show-pileup-for-variant="onShowPileupForVariant"
         >
         </variant-inspect-card>
@@ -584,7 +585,7 @@ export default {
       bringAttention: null,
 
       clearZoom: false,
-
+      cohortModelReady: false,
 
       /*
       * This variable controls special behavior for running gene.iobio education edition, with
@@ -640,8 +641,8 @@ export default {
         // The reference URL (for the current genome build)
         referenceURL: 'https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta',
 
-
-      }
+      },
+      isCohortReady: false
     }
   },
 
@@ -766,7 +767,8 @@ export default {
           new FreebayesSettings());
         self.geneModel.on("geneDangerSummarized", function(dangerSummary) {
           self.cohortModel.captureFlaggedVariants(dangerSummary)
-        })
+        });
+        self.isCohortReady = true;
 
         self.cacheHelper.cohort = self.cohortModel;
 
